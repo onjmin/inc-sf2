@@ -78,7 +78,7 @@ WebAudioFont は dtm の `scripts/otomad/tools/sf2-to-webaudiofont.ts` で .sf2 
 npx tsx scripts/otomad/tools/sf2-to-webaudiofont.ts <in.sf2> <フォルダ>/sound <名前> <フォルダ>/<音源定義>.xml
 ```
 
-権利はそれぞれの作者にある。作者から求められたら消す。
+権利はそれぞれの作者にある。**作者様に限らず、どなたからでも、問題をご指摘いただければ、ほかの作者のサウンドフォントは速やかに削除します。** ご連絡は [GitHub の Issues](https://github.com/onjmin/inc-sf2/issues) へお願いします。
 
 ## 公開
 
