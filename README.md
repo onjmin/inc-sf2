@@ -72,7 +72,9 @@ WebAudioFont のファイルは surikov の配信元と同じ形（`sound/PPPV_<
 player.loader.startLoad(ctx, "https://onjmin.github.io/inc-sf2/niji/20171022/sound/033000_Rainbow_20171022.js", "_tone_033000_Rainbow_20171022");
 ```
 
-dtm では .sf2 を読み、トラックの音源を `ExtSF2_<バンク>` にして、楽器の番号（GM）でプログラムを選ぶ。DAW では「外部 SoundFont（.sf2）」の「バンク」に番号を入れる。例: 虹.版のバンク 33・0 番（UDK「VAN」）。
+dtm では音源バンク `Niji`（虹.版）・`Otenkiame`（お天気雨版）として選べる。`#t0font=Niji_33` のようにバンクを付け、プログラムは楽器の番号で選ぶ（DAW では「キャラ」欄）。ここの WebAudioFont を読むので `#sf2=` は要らない。
+
+.sf2 をそのまま読むときは、トラックの音源を `ExtSF2_<バンク>` にして、楽器の番号（GM）でプログラムを選ぶ。DAW では「外部 SoundFont（.sf2）」の「バンク」に番号を入れる。例: 虹.版のバンク 33・0 番（UDK「VAN」）。
 
 ```
 #sf2=https://onjmin.github.io/inc-sf2/niji/20171022/Rainbow_SoundFont.sf2 #t0font=ExtSF2_33 #t0inst=Acoustic Grand Piano

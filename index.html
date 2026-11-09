@@ -73,7 +73,8 @@ player.loader.waitLoad(() =&gt; player.queueWaveTable(ctx, ctx.destination, wind
 <tr><td><a href="otenkiame/20200424/sound/list.txt">otenkiame/20200424/</a></td><td>RaInBow SoundFont（レ淫棒 2020年版）</td><td>お天気雨</td><td>20200424</td><td>39</td></tr>
 </table>
 <p>.sf2 は <code>&lt;フォルダ&gt;/Rainbow_SoundFont.sf2</code>（お天気雨版は <code>RaInBow_SoundFont.sf2</code>）、WebAudioFont は <code>&lt;フォルダ&gt;/sound/&lt;バンク3桁&gt;&lt;プログラム3桁&gt;_&lt;名前&gt;.js</code>（変数は <code>_tone_</code> を頭に付けたもの）。</p>
-<p>dtm では .sf2 を読み、音源を <code>ExtSF2_&lt;バンク&gt;</code> にして楽器の番号でプログラムを選びます（例: 虹.版のバンク 33・0 番）:</p>
+<p>dtm では音源バンク <code>Niji</code>（虹.版）・<code>Otenkiame</code>（お天気雨版）として選べます。<code>#t0font=Niji_33</code> のようにバンクを付け、プログラムは楽器の番号で選びます（DAW では「キャラ」欄）。</p>
+<p>.sf2 をそのまま読むときは、音源を <code>ExtSF2_&lt;バンク&gt;</code> にします（例: 虹.版のバンク 33・0 番）:</p>
 <pre>#sf2=https://onjmin.github.io/inc-sf2/niji/20171022/Rainbow_SoundFont.sf2 #t0font=ExtSF2_33 #t0inst=Acoustic Grand Piano
 @0 t120 o4 c4 e4 g4 &gt;c4;</pre>
 <p>WebAudioFont で読む:</p>
