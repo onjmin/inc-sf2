@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>淫ク☆サウンドフォント</title>
+<style>
+:root { --bg: #f6f3fa; --fg: #241d2e; --sub: #6b6078; --accent: #6a4c9c; --key: #fff; --keyb: #2b2433; --line: #d8cfe4; }
+@media (prefers-color-scheme: dark) { :root { --bg: #17131d; --fg: #ece6f3; --sub: #a497b4; --accent: #b79ae6; --key: #e9e4ef; --keyb: #0b0910; --line: #3a3147; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: system-ui, "Hiragino Sans", "Yu Gothic UI", sans-serif; line-height: 1.6; }
+main { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { font-size: 1.6rem; margin: 0 0 4px; }
+p.sub { color: var(--sub); margin: 0 0 20px; }
+.voices { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.voices button { border: 1px solid var(--line); background: transparent; color: var(--fg); padding: 8px 14px; border-radius: 999px; font: inherit; cursor: pointer; }
+.voices button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+#status { color: var(--sub); font-size: .9rem; min-height: 1.6em; }
+.kb { position: relative; height: 150px; margin: 12px 0 8px; user-select: none; touch-action: none; overflow-x: auto; }
+.kb .w, .kb .b { position: absolute; top: 0; border: 1px solid var(--line); border-radius: 0 0 6px 6px; }
+.kb .w { height: 150px; background: var(--key); }
+.kb .b { height: 92px; background: var(--keyb); z-index: 1; }
+.kb .on { background: var(--accent) !important; }
+.oct { display: flex; gap: 8px; align-items: center; color: var(--sub); font-size: .9rem; }
+.oct button { border: 1px solid var(--line); background: transparent; color: var(--fg); border-radius: 6px; padding: 2px 10px; font: inherit; cursor: pointer; }
+h2 { font-size: 1.1rem; margin: 32px 0 8px; }
+code, pre { font-family: ui-monospace, Consolas, monospace; font-size: .85rem; }
+pre { background: color-mix(in srgb, var(--line) 35%, transparent); padding: 12px; border-radius: 8px; overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+<h1>淫ク☆サウンドフォント</h1>
+<p class="sub">淫夢・クッキー☆の声から作ったシンセ4音色。.sf2 と WebAudioFont（JS）で配っています。</p>
+
+<div class="voices" id="voices"></div>
+<div id="status">音色を選んでから、鍵盤を押すか、キーボードの A〜K（W E T Y U が黒鍵）で鳴らします。</div>
+<div class="kb" id="kb"></div>
+<div class="oct"><button id="down">− オクターブ</button><span id="octlabel"></span><button id="up">＋ オクターブ</button></div>
+
+<h2>音色</h2>
+<table>
+<tr><th>番号（GM）</th><th>名前</th><th>素材</th></tr>
+<tr><td>80</td><td>YMN</td><td>初代クッキー☆ SIK「わたしも食べさせるぅ＾～」の「るぅ＾～」</td></tr>
+<tr><td>81</td><td>UDK</td><td>初代クッキー☆ UDK「あーっ・・・」</td></tr>
+<tr><td>82</td><td>野獣</td><td>INMシンセ「野獣シンセ G4」</td></tr>
+<tr><td>83</td><td>MUR</td><td>第三章 MUR「いいゾ～これ」の「ゾ～」</td></tr>
+</table>
+
+<h2>使い方</h2>
+<p>SF2: <a href="inc.sf2">inc.sf2</a>（DAW やサンプラーで読む）</p>
+<p>dtm（onjmin/dtm）で .sf2 を読む:</p>
+<pre>#sf2=https://onjmin.github.io/inc-sf2/inc.sf2 #t0font=ExtSF2 #t0inst=Lead 1 (square)
+@0 t132 o5 c4 d4 e4 g4;</pre>
+<p>WebAudioFont（<a href="https://github.com/surikov/webaudiofont">surikov/webaudiofont</a>）で読む:</p>
+<pre>const player = new WebAudioFontPlayer();
+player.loader.startLoad(ctx, "https://onjmin.github.io/inc-sf2/sound/0800_Inc_sf2_file.js", "_tone_0800_Inc_sf2_file");
+player.loader.waitLoad(() =&gt; player.queueWaveTable(ctx, ctx.destination, window._tone_0800_Inc_sf2_file, 0, 60, 1));</pre>
+<p>一覧: <a href="sound/list.txt">sound/list.txt</a></p>
+</main>
+<script>
+const VOICES = [
+  { prog: 80, name: "YMN" }, { prog: 81, name: "UDK" }, { prog: 82, name: "野獣" }, { prog: 83, name: "MUR" },
+];
+const varName = (p) => `_tone_${String(p).padStart(3, "0")}0_Inc_sf2_file`;
+let ctx = null, cur = null, base = 60;
+const cache = new Map(), playing = new Map();
+const status = document.getElementById("status");
+
+function loadScript(p) {
+  return new Promise((ok, ng) => {
+    if (window[varName(p)]) return ok();
+    const s = document.createElement("script");
+    s.src = `sound/${varName(p).slice(6)}.js`; s.onload = ok; s.onerror = ng; document.head.appendChild(s);
+  });
+}
+async function select(v) {
+  ctx ??= new AudioContext();
+  document.querySelectorAll(".voices button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.p == v.prog));
+  if (!cache.has(v.prog)) {
+    status.textContent = `${v.name} を読み込み中…`;
+    await loadScript(v.prog);
+    const zones = window[varName(v.prog)].zones.map((z) => {
+      const bin = atob(z.sample), n = bin.length / 2, buf = ctx.createBuffer(1, n, z.sampleRate), d = buf.getChannelData(0);
+      for (let i = 0; i < n; i++) { let x = bin.charCodeAt(2 * i) | (bin.charCodeAt(2 * i + 1) << 8); if (x >= 32768) x -= 65536; d[i] = x / 32768; }
+      return { ...z, buf };
+    });
+    cache.set(v.prog, zones);
+  }
+  cur = v; status.textContent = `${v.name}（${v.prog} 番）を鳴らせます。`;
+}
+function noteOn(m) {
+  if (!cur || playing.has(m)) return;
+  if (ctx.state !== "running") ctx.resume();
+  const z = cache.get(cur.prog).find((z) => m >= z.keyRangeLow && m <= z.keyRangeHigh);
+  const src = ctx.createBufferSource(), g = ctx.createGain(), t = ctx.currentTime;
+  src.buffer = z.buf; src.loop = true;
+  src.loopStart = z.loopStart / z.sampleRate; src.loopEnd = z.loopEnd / z.sampleRate;
+  src.playbackRate.value = 2 ** ((m * 100 - z.originalPitch) / 1200);
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.5, t + .004);
+  src.connect(g).connect(ctx.destination); src.start(t);
+  playing.set(m, { src, g }); key(m)?.classList.add("on");
+}
+function noteOff(m) {
+  const p = playing.get(m); if (!p) return;
+  const t = ctx.currentTime; p.g.gain.cancelScheduledValues(t); p.g.gain.setValueAtTime(p.g.gain.value, t);
+  p.g.gain.exponentialRampToValueAtTime(.0001, t + .12); p.src.stop(t + .15);
+  playing.delete(m); key(m)?.classList.remove("on");
+}
+// 鍵盤（2オクターブ）
+const kb = document.getElementById("kb"), WHITE = [0, 2, 4, 5, 7, 9, 11];
+const key = (m) => kb.querySelector(`[data-m="${m}"]`);
+function drawKeys() {
+  kb.innerHTML = ""; const W = Math.max(28, Math.min(52, (kb.clientWidth || 800) / 15));
+  let x = 0;
+  for (let m = base; m <= base + 24; m++) {
+    const pc = m % 12, k = document.createElement("div"); k.dataset.m = m;
+    if (WHITE.includes(pc)) { k.className = "w"; k.style.left = x + "px"; k.style.width = W + "px"; x += W; }
+    else { k.className = "b"; k.style.left = (x - W * .3) + "px"; k.style.width = W * .6 + "px"; }
+    k.addEventListener("pointerdown", (e) => { k.setPointerCapture(e.pointerId); noteOn(m); });
+    k.addEventListener("pointerup", () => noteOff(m)); k.addEventListener("pointercancel", () => noteOff(m));
+    kb.appendChild(k);
+  }
+  const n = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+  document.getElementById("octlabel").textContent = `C${base / 12 - 1}〜C${base / 12 + 1}`;
+}
+document.getElementById("down").onclick = () => { if (base > 36) { base -= 12; drawKeys(); } };
+document.getElementById("up").onclick = () => { if (base < 72) { base += 12; drawKeys(); } };
+const PC = "awsedftgyhujk";
+addEventListener("keydown", (e) => { const i = PC.indexOf(e.key); if (i >= 0 && !e.repeat) noteOn(base + i); });
+addEventListener("keyup", (e) => { const i = PC.indexOf(e.key); if (i >= 0) noteOff(base + i); });
+const vbox = document.getElementById("voices");
+for (const v of VOICES) {
+  const b = document.createElement("button"); b.textContent = `${v.prog} ${v.name}`; b.dataset.p = v.prog; b.setAttribute("aria-pressed", "false");
+  b.onclick = () => select(v).catch((e) => (status.textContent = "読み込めませんでした: " + e)); vbox.appendChild(b);
+}
+drawKeys(); addEventListener("resize", drawKeys);
+</script>
+</body>
+</html>
