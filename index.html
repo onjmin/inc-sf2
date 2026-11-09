@@ -12,6 +12,8 @@ body { margin: 0; background: var(--bg); color: var(--fg); font-family: system-u
 main { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
 h1 { font-size: 1.6rem; margin: 0 0 4px; }
 p.sub { color: var(--sub); margin: 0 0 20px; }
+.pick { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.pick select { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--fg); max-width: 100%; }
 .voices { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 .voices button { border: 1px solid var(--line); background: transparent; color: var(--fg); padding: 8px 14px; border-radius: 999px; font: inherit; cursor: pointer; }
 .voices button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
@@ -36,6 +38,7 @@ a { color: var(--accent); }
 <h1>淫ク☆サウンドフォント</h1>
 <p class="sub">淫夢・クッキー☆の声から作ったシンセ4音色。.sf2 と WebAudioFont（JS）で配っています。</p>
 
+<div class="pick"><label>サウンドフォント <select id="font"></select></label> <select id="voicesel" hidden></select></div>
 <div class="voices" id="voices"></div>
 <div id="status">音色を選んでから、鍵盤を押すか、キーボードの A〜K（W E T Y U が黒鍵）で鳴らします。</div>
 <div class="kb" id="kb"></div>
@@ -60,46 +63,60 @@ a { color: var(--accent); }
 player.loader.startLoad(ctx, "https://onjmin.github.io/inc-sf2/sound/0800_Inc_sf2_file.js", "_tone_0800_Inc_sf2_file");
 player.loader.waitLoad(() =&gt; player.queueWaveTable(ctx, ctx.destination, window._tone_0800_Inc_sf2_file, 0, 60, 1));</pre>
 <p>一覧: <a href="sound/list.txt">sound/list.txt</a></p>
+
+<h2>ほかの作者のサウンドフォント</h2>
+<p>淫ク☆とは別の作者のものを、元の配布のまま作者ごとのフォルダに置き、WebAudioFont にも書き出しています。上の「サウンドフォント」で選んで試し弾きできます。</p>
+<table>
+<tr><th>フォルダ</th><th>名前</th><th>作者</th><th>版</th><th>音色</th></tr>
+<tr><td><a href="niji/20171022/sound/list.txt">niji/20171022/</a></td><td>レ淫棒サウンドフォント</td><td>虹.（逃亡者）</td><td>20171022</td><td>102</td></tr>
+<tr><td><a href="otenkiame/20200424/sound/list.txt">otenkiame/20200424/</a></td><td>RaInBow SoundFont（レ淫棒 2020年版）</td><td>お天気雨</td><td>20200424</td><td>39</td></tr>
+</table>
+<p>.sf2 は <code>&lt;フォルダ&gt;/Rainbow_SoundFont.sf2</code>（お天気雨版は <code>RaInBow_SoundFont.sf2</code>）、WebAudioFont は <code>&lt;フォルダ&gt;/sound/&lt;バンク3桁&gt;&lt;プログラム3桁&gt;_&lt;名前&gt;.js</code>（変数は <code>_tone_</code> を頭に付けたもの）。</p>
+<pre>player.loader.startLoad(ctx, "https://onjmin.github.io/inc-sf2/niji/20171022/sound/033000_Rainbow_20171022.js", "_tone_033000_Rainbow_20171022");</pre>
 </main>
 <script>
-const VOICES = [
-  { prog: 80, name: "YMN" }, { prog: 81, name: "UDK" }, { prog: 82, name: "野獣" }, { prog: 83, name: "MUR" },
+const FONTS = [
+  { label: "淫ク☆（80〜83）", dir: "", voices: [
+    { id: "0800_Inc_sf2_file", name: "80 YMN" }, { id: "0810_Inc_sf2_file", name: "81 UDK" },
+    { id: "0820_Inc_sf2_file", name: "82 野獣" }, { id: "0830_Inc_sf2_file", name: "83 MUR" } ] },
+  { label: "レ淫棒 20171022（虹.）", dir: "niji/20171022/" },
+  { label: "レ淫棒 2020年版 20200424（お天気雨）", dir: "otenkiame/20200424/" },
 ];
-const varName = (p) => `_tone_${String(p).padStart(3, "0")}0_Inc_sf2_file`;
 let ctx = null, cur = null, base = 60;
 const cache = new Map(), playing = new Map();
 const status = document.getElementById("status");
 
-function loadScript(p) {
+function loadScript(dir, id) {
   return new Promise((ok, ng) => {
-    if (window[varName(p)]) return ok();
+    if (window["_tone_" + id]) return ok();
     const s = document.createElement("script");
-    s.src = `sound/${varName(p).slice(6)}.js`; s.onload = ok; s.onerror = ng; document.head.appendChild(s);
+    s.src = `${dir}sound/${id}.js`; s.onload = ok; s.onerror = ng; document.head.appendChild(s);
   });
 }
-async function select(v) {
+async function select(dir, v) {
   ctx ??= new AudioContext();
-  document.querySelectorAll(".voices button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.p == v.prog));
-  if (!cache.has(v.prog)) {
+  document.querySelectorAll(".voices button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.id === v.id));
+  if (!cache.has(v.id)) {
     status.textContent = `${v.name} を読み込み中…`;
-    await loadScript(v.prog);
-    const zones = window[varName(v.prog)].zones.map((z) => {
+    await loadScript(dir, v.id);
+    const zones = window["_tone_" + v.id].zones.map((z) => {
       const bin = atob(z.sample), n = bin.length / 2, buf = ctx.createBuffer(1, n, z.sampleRate), d = buf.getChannelData(0);
       for (let i = 0; i < n; i++) { let x = bin.charCodeAt(2 * i) | (bin.charCodeAt(2 * i + 1) << 8); if (x >= 32768) x -= 65536; d[i] = x / 32768; }
       return { ...z, buf };
     });
-    cache.set(v.prog, zones);
+    cache.set(v.id, zones);
   }
-  cur = v; status.textContent = `${v.name}（${v.prog} 番）を鳴らせます。`;
+  cur = v; status.textContent = `${v.name} を鳴らせます。`;
 }
 function noteOn(m) {
   if (!cur || playing.has(m)) return;
   if (ctx.state !== "running") ctx.resume();
-  const z = cache.get(cur.prog).find((z) => m >= z.keyRangeLow && m <= z.keyRangeHigh);
+  const z = cache.get(cur.id).find((z) => m >= z.keyRangeLow && m <= z.keyRangeHigh);
+  if (!z) return;
   const src = ctx.createBufferSource(), g = ctx.createGain(), t = ctx.currentTime;
-  src.buffer = z.buf; src.loop = true;
-  src.loopStart = z.loopStart / z.sampleRate; src.loopEnd = z.loopEnd / z.sampleRate;
-  src.playbackRate.value = 2 ** ((m * 100 - z.originalPitch) / 1200);
+  src.buffer = z.buf; src.loop = z.loopStart >= 1 && z.loopStart < z.loopEnd;
+  if (src.loop) { src.loopStart = z.loopStart / z.sampleRate; src.loopEnd = z.loopEnd / z.sampleRate; }
+  src.playbackRate.value = 2 ** ((m * 100 - (z.originalPitch - 100 * (z.coarseTune || 0) - (z.fineTune || 0))) / 1200);
   g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.5, t + .004);
   src.connect(g).connect(ctx.destination); src.start(t);
   playing.set(m, { src, g }); key(m)?.classList.add("on");
@@ -132,11 +149,29 @@ document.getElementById("up").onclick = () => { if (base < 72) { base += 12; dra
 const PC = "awsedftgyhujk";
 addEventListener("keydown", (e) => { const i = PC.indexOf(e.key); if (i >= 0 && !e.repeat) noteOn(base + i); });
 addEventListener("keyup", (e) => { const i = PC.indexOf(e.key); if (i >= 0) noteOff(base + i); });
-const vbox = document.getElementById("voices");
-for (const v of VOICES) {
-  const b = document.createElement("button"); b.textContent = `${v.prog} ${v.name}`; b.dataset.p = v.prog; b.setAttribute("aria-pressed", "false");
-  b.onclick = () => select(v).catch((e) => (status.textContent = "読み込めませんでした: " + e)); vbox.appendChild(b);
+const vbox = document.getElementById("voices"), fsel = document.getElementById("font"), vsel = document.getElementById("voicesel");
+const fail = (e) => (status.textContent = "読み込めませんでした: " + e);
+FONTS.forEach((f, i) => fsel.add(new Option(f.label, i)));
+async function showFont(f) {
+  vbox.innerHTML = ""; vsel.innerHTML = ""; cur = null;
+  if (!f.voices) {
+    const text = await (await fetch(`${f.dir}sound/list.txt`)).text();
+    f.voices = text.trim().split("\n").map((l) => { const [id, bank, prog, en, ja] = l.split("\t"); return { id, name: `${bank}-${prog} ${ja || en}` }; });
+  }
+  if (f.voices.length <= 8) {
+    vsel.hidden = true;
+    for (const v of f.voices) {
+      const b = document.createElement("button"); b.textContent = v.name; b.dataset.id = v.id; b.setAttribute("aria-pressed", "false");
+      b.onclick = () => select(f.dir, v).catch(fail); vbox.appendChild(b);
+    }
+  } else {
+    vsel.hidden = false; vsel.add(new Option("音色を選ぶ（バンク-プログラム）", ""));
+    f.voices.forEach((v, i) => vsel.add(new Option(v.name, i)));
+    vsel.onchange = () => vsel.value !== "" && select(f.dir, f.voices[vsel.value]).catch(fail);
+  }
 }
+fsel.onchange = () => showFont(FONTS[fsel.value]).catch(fail);
+showFont(FONTS[0]);
 drawKeys(); addEventListener("resize", drawKeys);
 </script>
 </body>

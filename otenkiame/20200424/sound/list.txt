@@ -1,0 +1,39 @@
+000000_RaInBow_20200424	0	0	Yaju houkou	野獣の咆哮
+000001_RaInBow_20200424	0	1	Yaju houkou Mo	野獣の咆哮 Mo
+000002_RaInBow_20200424	0	2	Yaju houkou Pt	野獣の咆哮 Pt
+000003_RaInBow_20200424	0	3	Yaju houkou Syn1St	野獣の咆哮 Syn1St
+000004_RaInBow_20200424	0	4	Yaju houkou Syn1Mo	野獣の咆哮 Syn1Mo
+000012_RaInBow_20200424	0	12	Yaju houkou Dbl	ダブリング咆哮
+000016_RaInBow_20200424	0	16	Yaju Oon!	オォン！
+000017_RaInBow_20200424	0	17	Yaju Oon! Pt	オォン！ Pt
+000020_RaInBow_20200424	0	20	Yaju koko	こ↑こ↓
+000021_RaInBow_20200424	0	21	Yaju koko Mo	こ↑こ↓ Mo
+000032_RaInBow_20200424	0	32	TON World	世界の遠野
+000033_RaInBow_20200424	0	33	TON World Pt	世界の遠野 Pt
+000034_RaInBow_20200424	0	34	TON World Str1	宇宙の遠野
+000064_RaInBow_20200424	0	64	MUR BinjoBass	便乗ベース
+000065_RaInBow_20200424	0	65	MUR BinjoBass Mo	便乗ベース Mo
+008000_RaInBow_20200424	8	0	TDN dog	ワン！
+008001_RaInBow_20200424	8	1	TDN dog Mo	ワン！ Mo
+008004_RaInBow_20200424	8	4	TDN AAA! Syn	TDNシンセ
+008005_RaInBow_20200424	8	5	TDN AAA! Sitar	TDNシタール
+016000_RaInBow_20200424	16	0	Yusaku BinbinBass	ビンビンベース
+016001_RaInBow_20200424	16	1	Yusaku BinbinBass Mo	ビンビンベース Mo
+064000_RaInBow_20200424	64	0	RU Puhaa	ぷはー
+064001_RaInBow_20200424	64	1	RU Puhaa Bell	ぷはーベル
+064004_RaInBow_20200424	64	4	RU 'ten'ki	てん気
+064005_RaInBow_20200424	64	5	RU 'ten'ki Piano	てん気ピアノ
+064032_RaInBow_20200424	64	32	UDK SynthA Syn1	UDKシンセA Syn1
+064033_RaInBow_20200424	64	33	UDK SynthA Syn2	UDKシンセA Syn2
+064036_RaInBow_20200424	64	36	UDK SynthA Dec	UDKシンセA Dec
+064040_RaInBow_20200424	64	40	UDK SynthB	UDKシンセB
+064044_RaInBow_20200424	64	44	UDK 'VAN'houten	VANホーテン
+064064_RaInBow_20200424	64	64	SIK Ruu Syn	SIKシンセ
+064065_RaInBow_20200424	64	65	SIK Ruu Dec	SIKシンセ Dec
+064072_RaInBow_20200424	64	72	SIK A!	あっ！
+064074_RaInBow_20200424	64	74	SIK Mai! Pt	まい！ Pt
+064096_RaInBow_20200424	64	96	ALC kya!	大外刈り
+096000_RaInBow_20200424	96	0	TNK kiretenaai Syn	TNKシンセ
+128000_RaInBow_20200424	128	0	Perc INM1	淫夢リズム系1
+128064_RaInBow_20200424	128	64	Perc Cookie1	クッキー☆リズム系
+128096_RaInBow_20200424	128	96	Perc ICGdrum	ICGドラム

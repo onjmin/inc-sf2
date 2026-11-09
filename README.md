@@ -55,6 +55,31 @@ WebAudioFont のファイルは surikov の配信元と同じ形（`sound/PPPV_<
 
 声の素材の権利は、それぞれの元の作品と作者にある。
 
+## ほかの作者のサウンドフォント
+
+淫ク☆とは別に、ほかの作者のサウンドフォントを作者ごとのフォルダに置き、web から呼べるようにしている（淫ク☆の素材の方針はこれらには当てはめない。中身は元の配布のまま）。
+
+| フォルダ | 名前 | 作者 | 版 | 音色 |
+|---|---|---|---|---|
+| `niji/20171022/` | レ淫棒サウンドフォント | 虹.（逃亡者） | 20171022（2017/09/10 公開の版を直したもの） | 102 |
+| `otenkiame/20200424/` | RaInBow SoundFont（レ淫棒 2020年版、レ要素なし） | お天気雨 | 20200424（元は sm36367282 で配布） | 39 |
+
+- .sf2: `https://onjmin.github.io/inc-sf2/niji/20171022/Rainbow_SoundFont.sf2`、`https://onjmin.github.io/inc-sf2/otenkiame/20200424/RaInBow_SoundFont.sf2`（URL に空白を入れないよう、お天気雨版はファイル名の空白を `_` にした）
+- Domino の音源定義: 同じフォルダの `.xml`。お天気雨版は説明書・更新履歴・音色一覧も置いた。
+- WebAudioFont: `<フォルダ>/sound/<バンク3桁><プログラム3桁>_<名前>.js`、変数は `_tone_` を頭に付けたもの。名前は虹.版が `Rainbow_20171022`、お天気雨版が `RaInBow_20200424`。どちらもキャラごとにバンクを分けた作りで GM の番号では選べないので、バンクもファイル名に入れた。一覧（バンク・プログラム・元の名前・日本語名）は `sound/list.txt`。
+
+```js
+player.loader.startLoad(ctx, "https://onjmin.github.io/inc-sf2/niji/20171022/sound/033000_Rainbow_20171022.js", "_tone_033000_Rainbow_20171022");
+```
+
+WebAudioFont は dtm の `scripts/otomad/tools/sf2-to-webaudiofont.ts` で .sf2 から書き出した（読むのは dtm の外部 SF2 と同じパーサー。同じ鍵に重なるベロシティ違いのゾーンは最初のものだけ残す）。
+
+```
+npx tsx scripts/otomad/tools/sf2-to-webaudiofont.ts <in.sf2> <フォルダ>/sound <名前> <フォルダ>/<音源定義>.xml
+```
+
+権利はそれぞれの作者にある。作者から求められたら消す。
+
 ## 公開
 
-main へ push すると、`.github/workflows/gh-pages.yml` が `index.html`・`inc.sf2`・`sound/` を GitHub Pages へ出す（dtm と同じ作り）。リポジトリの Settings → Pages → Source を「GitHub Actions」にしておく。
+main へ push すると、`.github/workflows/gh-pages.yml` が `index.html`・`inc.sf2`・`sound/`・`niji/`・`otenkiame/` を GitHub Pages へ出す（dtm と同じ作り）。リポジトリの Settings → Pages → Source を「GitHub Actions」にしておく。

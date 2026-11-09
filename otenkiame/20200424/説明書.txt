@@ -1,0 +1,61 @@
+-概要-
+
+淫夢とクッキー☆の音MADが簡単に作れるサウンドフォントです。レ要素はありません。
+
+
+-中身-
+
+RaInBow SoundFont [バージョン]
+│
+├sforzando
+│├バンクごとのフォルダー
+││└.sfz (sfz形式のサウンドフォント)
+│└sf2_smpl.wav (sfz形式のサウンドフォントが参照する音声ファイル)
+│
+├音声素材
+│└.wav
+│
+├RaInBow SoundFont.sf2 (sf2形式のサウンドフォント)
+│
+├RaInBow SoundFont.xml (Dominoでこのサウンドフォントを使うための音源定義ファイル)
+│
+├音色一覧.txt
+├更新履歴.txt
+├説明書.txt
+│
+├.mid (デモソング)
+└.flac (デモソング)
+
+
+-サウンドフォントとは-
+
+サウンドフォントは、好きな音を楽器にできるサンプラーというもので使えるファイルの一種で、音声そのものとそれを楽器として使うためのさまざまなパラメーターが合わさったものです。
+サウンドフォントを読み込めるサンプラー(サウンドフォントプレイヤー)で使えば、MIDIシーケンサーやDAWで簡単に音MADが作れます。
+
+
+-このサウンドフォントを使うことができるプレイヤー-
+
+MIDIシーケンサーで使う場合はVirtualMIDISynth(日本語対応、最大4ポート)やOmniMIDI(ASIOが使える)がおすすめです。
+DAWではsforzandoや、Studio OneのPresenceがおすすめです。
+このサウンドフォントではサンプルオフセットを多用しているので、これに対応していないSFZ Sample Playerなどではとても使いづらくなります。
+
+
+-DominoとVirtualMIDISynthでの使い方-
+
+1.Dominoをダウンロードして適当な場所に置き、VirtualMIDISynthをインストールしたら、RaInBow SoundFont.xmlをDominoのModuleフォルダの中に入れる。
+
+2.VirtualMIDISynthでRaInBow SoundFont.sf2を追加して、Dominoの環境設定のMIDI-OUTでデバイスにVirtualMIDISynthを選び、音源定義ファイルにレ淫棒サウンドフォントを選ぶ。
+
+3.「Domino 使い方」などと調べたりDominoの取扱説明書を読んだりして作る。
+
+4.完成したらDominoでSMF(MIDIファイル)に出力したあと、タスクバーにあるVirtualMIDISynthのアイコンを右クリックし「MIDIファイルを変換」、あるいはスタートメニューのVirtualMIDISynth MIDI Converterを使って音声ファイルに変換する。
+
+VirtualMIDISynthをインストールするとMIDIを再生するソフト(昔のゲームなど)でVirtualMIDISynthが使われて、このサウンドフォントの音が鳴る可能性があります。
+VirtualMIDISynthの設定画面にも書いてある通りMIDIマッパーを使えばデフォルトのMIDI出力先を設定できるので、必要であればインストールしてください。
+OmniMIDIなら、インストールしてもデフォルトの出力先は変わりません。
+
+
+-更新方法-
+
+音色の修正や配置の変更がある更新では、上書きすると古いバージョンを使ったプロジェクトやMIDIファイルが正常に再生できなくなったり音色が変わったりします。
+更新履歴に更新内容を書いてあるので、上書きせずに別の場所に置くなどしてください。
