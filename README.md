@@ -2,6 +2,12 @@
 
 淫ク☆サウンドフォント。淫夢・クッキー☆の声から作ったシンセ4音色を、.sf2 と WebAudioFont（JS）で配る。
 
+## 方針
+
+- 淫ク☆サウンドフォントは、このリポジトリの持ち主が作って保守する。
+- 素材は **淫夢とクッキー☆だけ** にする。レスリング・エア本・ヒカマニなどの素材は、拡張としても今後入れない。
+- 名前が近いものとして、虹.氏のレ淫棒サウンドフォント（2017年からの版）と、お天気雨氏の 2020年版（RaInBow SoundFont 20200424）がある。どちらも別の作者のもので、ここで作るものとは別物。
+
 - 試し弾き: https://onjmin.github.io/inc-sf2/
 - SF2: https://onjmin.github.io/inc-sf2/inc.sf2
 - WebAudioFont: `https://onjmin.github.io/inc-sf2/sound/<番号>0_Inc_sf2_file.js`（一覧は [sound/list.txt](sound/list.txt)）
