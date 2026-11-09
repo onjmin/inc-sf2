@@ -46,18 +46,20 @@ a { color: var(--accent); }
 
 <h2>音色</h2>
 <table>
-<tr><th>番号（GM）</th><th>名前</th><th>素材</th></tr>
-<tr><td>80</td><td>YMN</td><td>初代クッキー☆ SIK「わたしも食べさせるぅ＾～」の「るぅ＾～」</td></tr>
-<tr><td>81</td><td>UDK</td><td>初代クッキー☆ UDK「あーっ・・・」</td></tr>
-<tr><td>82</td><td>野獣</td><td>INMシンセ「野獣シンセ G4」</td></tr>
-<tr><td>83</td><td>MUR</td><td>第三章 MUR「いいゾ～これ」の「ゾ～」</td></tr>
+<tr><th>バンク-プログラム</th><th>音色名</th><th>素材</th></tr>
+<tr><td>0-80</td><td>YMN「るぅ＾～」</td><td>初代クッキー☆ SIK「わたしも食べさせるぅ＾～」の「るぅ＾～」</td></tr>
+<tr><td>0-81</td><td>UDK「あーっ」</td><td>初代クッキー☆ UDK「あーっ・・・」</td></tr>
+<tr><td>0-82</td><td>野獣シンセ</td><td>INMシンセ「野獣シンセ G4」</td></tr>
+<tr><td>0-83</td><td>MUR「ゾ～」</td><td>第三章 MUR「いいゾ～これ」の「ゾ～」</td></tr>
 </table>
+<p>バンク 0 の名前は「淫ク☆」。プログラムは GM の番号（80〜83）。名前は Domino の音源定義 <a href="Inc_SoundFont.xml">Inc_SoundFont.xml</a> にもある。</p>
 
 <h2>使い方</h2>
 <p>SF2: <a href="inc.sf2">inc.sf2</a>（DAW やサンプラーで読む）</p>
 <p>dtm（onjmin/dtm）で .sf2 を読む:</p>
-<pre>#sf2=https://onjmin.github.io/inc-sf2/inc.sf2 #t0font=ExtSF2 #t0inst=Lead 1 (square)
+<pre>#t0font=Inc #t0inst=Lead 1 (square)
 @0 t132 o5 c4 d4 e4 g4;</pre>
+<p>dtm のトラック設定では、音源「淫ク☆」を選ぶと「音色」欄に上の4つが出る。.sf2 を読むなら <code>#sf2=https://onjmin.github.io/inc-sf2/inc.sf2 #t0font=ExtSF2</code>。</p>
 <p>WebAudioFont（<a href="https://github.com/surikov/webaudiofont">surikov/webaudiofont</a>）で読む:</p>
 <pre>const player = new WebAudioFontPlayer();
 player.loader.startLoad(ctx, "https://onjmin.github.io/inc-sf2/sound/0800_Inc_sf2_file.js", "_tone_0800_Inc_sf2_file");
@@ -83,8 +85,8 @@ player.loader.waitLoad(() =&gt; player.queueWaveTable(ctx, ctx.destination, wind
 <script>
 const FONTS = [
   { label: "淫ク☆（80〜83）", dir: "", voices: [
-    { id: "0800_Inc_sf2_file", name: "80 YMN" }, { id: "0810_Inc_sf2_file", name: "81 UDK" },
-    { id: "0820_Inc_sf2_file", name: "82 野獣" }, { id: "0830_Inc_sf2_file", name: "83 MUR" } ] },
+    { id: "0800_Inc_sf2_file", name: "0-80 YMN「るぅ＾～」" }, { id: "0810_Inc_sf2_file", name: "0-81 UDK「あーっ」" },
+    { id: "0820_Inc_sf2_file", name: "0-82 野獣シンセ" }, { id: "0830_Inc_sf2_file", name: "0-83 MUR「ゾ～」" } ] },
   { label: "レ淫棒 20171022（虹.）", dir: "niji/20171022/" },
   { label: "レ淫棒 2020年版 20200424（お天気雨）", dir: "otenkiame/20200424/" },
 ];

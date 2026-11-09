@@ -11,26 +11,31 @@
 - 試し弾き: https://onjmin.github.io/inc-sf2/
 - SF2: https://onjmin.github.io/inc-sf2/inc.sf2
 - WebAudioFont: `https://onjmin.github.io/inc-sf2/sound/<番号>0_Inc_sf2_file.js`（一覧は [sound/list.txt](sound/list.txt)）
+- Domino の音源定義（バンク名・音色名）: [Inc_SoundFont.xml](Inc_SoundFont.xml)
 
 ## 音色
 
-| 番号（GM） | 名前 | 素材 | 元の高さ |
-|---|---|---|---|
-| 80 | YMN | 初代クッキー☆ SIK「わたしも食べさせるぅ＾～」の「るぅ＾～」 | C5 |
-| 81 | UDK | 初代クッキー☆ UDK「あーっ・・・」 | A#3 |
-| 82 | 野獣 | INMシンセ「野獣シンセ G4」 | G4 |
-| 83 | MUR | 第三章 MUR「いいゾ～これ」の「ゾ～」 | C#3 |
+バンク 0 の名前は「淫ク☆」。プログラムは GM の番号（80〜83）。
+
+| バンク-プログラム | 音色名 | sf2 のプリセット名 | 素材 | 元の高さ |
+|---|---|---|---|---|
+| 0-80 | YMN「るぅ＾～」 | Inc YMN | 初代クッキー☆ SIK「わたしも食べさせるぅ＾～」の「るぅ＾～」 | C5 |
+| 0-81 | UDK「あーっ」 | Inc UDK | 初代クッキー☆ UDK「あーっ・・・」 | A#3 |
+| 0-82 | 野獣シンセ | Inc YJ | INMシンセ「野獣シンセ G4」 | G4 |
+| 0-83 | MUR「ゾ～」 | Inc MUR | 第三章 MUR「いいゾ～これ」の「ゾ～」 | C#3 |
 
 どれも C2〜C6 を短3度おきに 17 本置き、押している間はループで鳴り続ける。32 kHz・16bit。
 
 ## 使い方
 
-dtm（[onjmin/dtm](https://github.com/onjmin/dtm)）で .sf2 を読む。楽器は GM の番号で選ぶ（80〜83）。
+dtm（[onjmin/dtm](https://github.com/onjmin/dtm)）では音源 `Inc` を選ぶ。トラック設定の「音色」欄に上の4つが出る（MML では楽器の GM 番号 80〜83 で書く。持っていない番号は 0-80 で鳴る）。
 
 ```
-#sf2=https://onjmin.github.io/inc-sf2/inc.sf2 #t0font=ExtSF2 #t0inst=Lead 1 (square)
+#t0font=Inc #t0inst=Lead 1 (square)
 @0 t132 o5 c4 d4 e4 g4;
 ```
+
+.sf2 を読むなら `#sf2=https://onjmin.github.io/inc-sf2/inc.sf2 #t0font=ExtSF2`。
 
 [surikov/webaudiofont](https://github.com/surikov/webaudiofont) のプレイヤーで読む。
 

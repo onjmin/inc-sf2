@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<ModuleData Name="淫ク☆サウンドフォント" Folder="" Priority="" FileCreator="onjmin" FileVersion="20261109" WebSite="https://onjmin.github.io/inc-sf2/">
+<InstrumentList>
+	<Map Name="淫ク☆" >
+		<PC Name="YMN「るぅ＾～」" PC="81" >
+			<Bank Name="YMN「るぅ＾～」" LSB="0" MSB="0" />
+		</PC>
+		<PC Name="UDK「あーっ」" PC="82" >
+			<Bank Name="UDK「あーっ」" LSB="0" MSB="0" />
+		</PC>
+		<PC Name="野獣シンセ" PC="83" >
+			<Bank Name="野獣シンセ" LSB="0" MSB="0" />
+		</PC>
+		<PC Name="MUR「ゾ～」" PC="84" >
+			<Bank Name="MUR「ゾ～」" LSB="0" MSB="0" />
+		</PC>
+	</Map>
+</InstrumentList>
+</ModuleData>
